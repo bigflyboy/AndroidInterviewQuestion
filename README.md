@@ -6,7 +6,6 @@
 一、java面试题</br>
 熟练掌握java是很关键的，大公司不仅仅要求你会使用几个api，更多的是要你熟悉源码实现原理，甚至要你知道有哪些不足，怎么改进，还有一些java有关的一些算法，设计模式等等。</br>
 （一） java基础面试知识点</br>
-冻豆腐豆腐
 java中==和equals和hashCode的区别</br>
 int、char、long各占多少字节数</br>
 int与integer的区别</br>
