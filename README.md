@@ -8,6 +8,7 @@
 （一） java基础面试知识点</br>
 
 java中==和equals和hashCode的区别</br>
+nbsp;nbsp;nbsp;nbsp;nbsp;nbsp; == 比较基础数据类型的值是否相等，对于对象，比较其存储地址； equals在非重写的情况下，也是只比较存储地址； 
 int、char、long各占多少字节数</br>
 int与integer的区别</br>
 探探对java多态的理解</br>
