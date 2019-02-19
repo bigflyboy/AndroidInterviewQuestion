@@ -5,7 +5,7 @@
 4. 跨平台Hybrid 开发
 ### 一、java面试题
 ##### 熟练掌握java是很关键的，大公司不仅仅要求你会使用几个api，更多的是要你熟悉源码实现原理，甚至要你知道有哪些不足，怎么改进，还有一些java有关的一些算法，设计模式等等。
-#### (1) java基础面试知识点
+####  (1) java基础面试知识点
 ##### 1. java中==和equals和hashCode的区别
 - == 比较基础数据类型的值是否相等，对于对象，比较其存储地址； equals在非重写的情况下，也是只比较存储地址;
 ##### 2. int、char、long各占多少字节数
@@ -31,7 +31,7 @@
 ##### 22. 闭包和局部内部类的区别
 ##### 23. string 转换成 integer的方式及原理
 
-#### (2) java深入源码级的面试题 
+####  (2) java深入源码级的面试题 
 ##### 1. 哪些情况下的对象会被垃圾回收机制处理掉？ 
 ##### 2. 讲一下常见编码方式？ 
 ##### 3. utf-8编码中的中文占几个字节；int型几个字节？
@@ -49,7 +49,7 @@
 ##### 15. String为什么要设计成不可变的？
 ##### 16. Object类的equal和hashCode方法重写，为什么？
 
-#### (3) 数据结构
+####  (3) 数据结构
 
 ##### 1. 常用数据结构简介
 ##### 2. 并发集合了解哪些？
@@ -85,7 +85,7 @@
 ##### 32. 链表翻转（即：翻转一个单项链表）
 ##### 33. 合并多个单有序链表（假设都是递增的）
 
-#### (4) 线程、多线程和线程池
+####  (4) 线程、多线程和线程池
 
 ##### 1. 开启线程的三种方式？
 ##### 2. 线程和进程的区别？
@@ -138,7 +138,7 @@
 
 ### 二、Android面试题
 
-####（1）Android基础知识点
+#### （1）Android基础知识点
 
 ##### 1. 四大组件是什么
 ##### 2. 四大组件的生命周期和简单用法
@@ -183,40 +183,40 @@
 ##### 41. 估值器
 ##### 42. Android中数据存储方式
 
-（二）Android源码相关分析
+#### （2）Android源码相关分析
 
-Android动画框架实现原理
-Android各个版本API的区别
-Requestlayout，onlayout，onDraw，DrawChild区别与联系
-invalidate和postInvalidate的区别及使用
-Activity-Window-View三者的差别
-谈谈对Volley的理解
-如何优化自定义View
-低版本SDK如何实现高版本api？
-描述一次网络请求的流程
-HttpUrlConnection 和 okhttp关系
-Bitmap对象的理解
-looper架构
-ActivityThread，AMS，WMS的工作原理
-自定义View如何考虑机型适配
-自定义View的事件
-AstncTask+HttpClient 与 AsyncHttpClient有什么区别？
-LaunchMode应用场景
-AsyncTask 如何使用?
-SpareArray原理
-请介绍下ContentProvider 是如何实现数据共享的？
-AndroidService与Activity之间通信的几种方式
-IntentService原理及作用是什么？
-说说Activity、Intent、Service 是什么关系
-ApplicationContext和ActivityContext的区别
-SP是进程同步的吗?有什么方法做到同步？
-谈谈多线程在Android中的使用
-进程和 Application 的生命周期
-封装View的时候怎么知道view的大小
-RecycleView原理
-AndroidManifest的作用与理解
+##### 1. Android动画框架实现原理
+##### 2. Android各个版本API的区别
+##### 3. Requestlayout，onlayout，onDraw，DrawChild区别与联系
+##### 4. invalidate和postInvalidate的区别及使用
+##### 5. Activity-Window-View三者的差别
+##### 6. 谈谈对Volley的理解
+##### 7. 如何优化自定义View
+##### 8. 低版本SDK如何实现高版本api？
+##### 9. 描述一次网络请求的流程
+##### 10. HttpUrlConnection 和 okhttp关系
+##### 11. Bitmap对象的理解
+##### 12. looper架构
+##### 13. ActivityThread，AMS，WMS的工作原理
+##### 14. 自定义View如何考虑机型适配
+##### 15. 自定义View的事件
+##### 16. AstncTask+HttpClient 与 AsyncHttpClient有什么区别？
+##### 17. LaunchMode应用场景
+##### 18. AsyncTask 如何使用?
+##### 19. SpareArray原理
+##### 20. 请介绍下ContentProvider 是如何实现数据共享的？
+##### 21. AndroidService与Activity之间通信的几种方式
+##### 22. IntentService原理及作用是什么？
+##### 23. 说说Activity、Intent、Service 是什么关系
+##### 24. ApplicationContext和ActivityContext的区别
+##### 25. SP是进程同步的吗?有什么方法做到同步？
+##### 26. 谈谈多线程在Android中的使用
+##### 27. 进程和 Application 的生命周期
+##### 28. 封装View的时候怎么知道view的大小
+##### 29. RecycleView原理
+##### 30. AndroidManifest的作用与理解
 
-（三）常见的一些原理性问题
+####（3）常见的一些原理性问题
 
 Handler机制和底层实现
 Handler、Thread和HandlerThread的差别
