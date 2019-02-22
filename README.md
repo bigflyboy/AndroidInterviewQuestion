@@ -75,8 +75,14 @@
 ##### 22. 数组和链表的区别
 ##### 23. 二叉树的深度优先遍历和广度优先遍历的具体实现
 ##### 24. 堆的结构
+- 数据结构中的堆是完全二叉树,即最后一行的子树都是从左往右排列;
+删除节点会把最后一个子树,挪到该节点,然后向下比较子树,与较大的子树互换位置,直到最后一层;
+插入则是,放在最后一行,最右侧,然后与父节点比较,大于父节点,则换位置.
+也就是说每一个父节点的关键字的值都大于或等于这个节点的子节点的关键字值。
 ##### 25. 堆和树的区别
 ##### 26. 堆和栈在内存中的区别是什么(解答提示：可以从数据结构方面以及实际实现方面两个方面去回答)？
+- 堆内存先进先出,存储对象.动态分配内存,存取速度慢.不需要知道存储的元素的生存期.另外所有线程公用一个堆, 每个线程都有一个栈;堆内的数据不共享,是指对同一个Apple a = new Apple(); Apple b = a ;修改b,则a值也会变.
+而对于栈.先进后出,存储基本类型,不包括String,生存期必须固定.  赋值的时候不会被影响.存取速度快.
 ##### 27. 什么是深拷贝和浅拷贝
 ##### 28. 手写链表逆序代码
 ##### 29. 讲一下对树，B+树的理解
@@ -92,17 +98,22 @@
 ##### 3. 为什么要有线程，而不是仅仅用进程？
 ##### 4. run()和start()方法区别
 ##### 5. 如何控制某个方法允许并发访问线程的个数？
+- Semaphore ,在方法执行之前mSemaphore.acquire(); 执行之后 mSemaphore.release();****
 ##### 6. 在Java中wait和seelp方法的不同；
 ##### 7. 谈谈wait/notify关键字的理解
 ##### 8. 什么导致线程阻塞？
 ##### 9. 线程如何关闭？
 ##### 10. 讲一下java中的同步的方法
+- synchronized 修饰非静态方法,则单个对象在不同的线程 只能顺序访问. 如果要多个对象同步,
+则必须synchronized(X.class)来锁对象
 ##### 11. 数据一致性如何保证？
 ##### 12. 如何保证线程安全？
 ##### 13. 如何实现线程同步？
 ##### 14. 两个进程同时要求写或者读，能不能实现？如何防止进程的同步？
 ##### 15. 线程间操作List
 ##### 16. Java中对象的生命周期
+- 创建阶段（Creation）、应用阶段（Using）、不可视阶段（Invisible）、
+不可到达阶段（Unreachable）、可收集阶段（Collected）、终结阶段（Finalized）与释放阶段（Free）
 ##### 17. Synchronized用法
 ##### 18. synchronize的原理
 ##### 19. 谈谈对Synchronized关键字，类锁，方法锁，重入锁的理解
@@ -130,12 +141,6 @@
 ##### 41. 多线程断点续传原理
 ##### 42. 断点续传的实现
 
-#### (5) 并发编程有关知识点（这个是一般Android开发用的少的，所以建议多去看看）：
-##### 1. 平时Android开发中对并发编程可以做得比较少，Thread这个类经常会用到，但是我们想提升自己的话，一定不能停留在表面，,我们也应该去了解一下java的关于线程相关的源码级别的东西。
-##### 2. 附；java进阶与Android内核技术大纲
-
-
-
 ### 二、Android面试题
 
 #### （1）Android基础知识点
@@ -157,7 +162,12 @@
 ##### 15. fragment之间传递数据的方式？
 ##### 16. Activity 怎么和Service 绑定？
 ##### 17. 怎么在Activity 中启动自己对应的Service？
+-  Activity通过bindService(Intent service, ServiceConnection  conn, int flags)跟Service进行绑定。
 ##### 18. service和activity怎么进行数据交互？
+- 执行startService时，Service会经历onCreate->onStartCommand。当执行stopService时，直接调用onDestroy方法。调用者如果没有stopService，Service会一直在后台运行，下次调用者再起来仍然可以stopService。
+  执行bindService时，Service会经历onCreate->onBind。这个时候调用者和Service绑定在一起。调用者调用unbindService方法或者调用者Context不存在了（如Activity被finish了），Service就会调用onUnbind->onDestroy。这里所谓的绑定在一起就是说两者共存亡了。
+  多次调用startService，该Service只能被创建一次，即该Service的onCreate方法只会被调用一次。但是每次调用startService，onStartCommand方法都会被调用。Service的onStart方法在API 5时被废弃，替代它的是onStartCommand方法。
+  第一次执行bindService时，onCreate和onBind方法会被调用，但是多次执行bindService时，onCreate和onBind方法并不会被多次调用，即并不会多次创建服务和绑定服务。
 ##### 19. Service的开启方式
 ##### 20. 请描述一下Service 的生命周期
 ##### 21. 谈谈你对ContentProvider的理解
