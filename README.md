@@ -117,6 +117,7 @@
 ##### 17. Synchronized用法
 ##### 18. synchronize的原理
 ##### 19. 谈谈对Synchronized关键字，类锁，方法锁，重入锁的理解
+- 
 ##### 20. static synchronized 方法的多线程访问和作用
 ##### 21. 同一个类里面两个synchronized方法，两个线程同时访问的问题
 ##### 22. volatile的原理
@@ -150,9 +151,28 @@
 ##### 3. Activity之间的通信方式
 ##### 4. Activity各种情况下的生命周期
 ##### 5. 横竖屏切换的时候，Activity 各种情况下的生命周期
+-启动: onCreate() -> onStart() -> onResume()
+横竖屏切换后(原来的活动会销毁然后再重建): onPause() -> onStop() -> onDestroy() -> onCreate() -> onStart() -> onResume()
+-配置后Manifest 启动: onCreate() -> onStart() -> onResume()
+横竖屏切换时活动不重建,但是会回调一个方法: onConfigurationChanged()。
 ##### 6. Activity与Fragment之间生命周期比较
+-当Activity包含一个Fragment的时候，Activity和Fragment生命周期的变化：
+  Activity（onCreate）---> Fragment（onAttach onCreate onCreateView onActivityCreate）--->
+  Activity（onStart）---> Fragment（onStart）--->
+  Activity（onResume）---> Fragment（onResume）--->
+  Fragment（onPause）---> Activity（onPause）--->
+  Fragment（onStop）---> Activity（onStop）--->
+  Fragment（onDestroyView onDestroy onDetach）---> Activity（onDestroy）
+  由于Fragment依附于Activity，所以启动的时候Activity的方法肯定在前面，Fragment的方法在后面，但是在要销毁的时候，Fragment的方法先执行，再执行     Activity的方法。
+
 ##### 7. Activity上有Dialog的时候按Home键时的生命周期
+-正常
 ##### 8. 两个Activity 之间跳转时必然会执行的是哪几个方法？
+  -一般情况下比如说有两个activity,分别叫A,B。
+  当在A 里面激活B 组件的时候, A会调用onPause()方法,然后B调用onCreate() ,onStart(), onResume()。
+  这个时候B覆盖了A的窗体, A会调用onStop()方法。
+  如果B是个透明的窗口,或者是对话框的样式, 就不会调用A的onStop()方法。
+  如果B已经存在于Activity栈中，B就不会调用onCreate()方法。
 ##### 9. 前台切换到后台，然后再回到前台，Activity生命周期回调方法。弹出Dialog，生命值周期回调方法。
 ##### 10. Activity的四种启动模式对比
 ##### 11. Activity状态保存于恢复
@@ -172,12 +192,20 @@
 ##### 20. 请描述一下Service 的生命周期
 ##### 21. 谈谈你对ContentProvider的理解
 ##### 22. 说说ContentProvider、ContentResolver、ContentObserver 之间的关系
+    -ContentProvider——内容提供者， 在android中的作用是对外共享数据，也就是说你可以通过ContentProvider把应用中的数据共享给其他应用访问，其他应用可以通过ContentProvider 对你应用中的数据进行添删改查。
+    ContentResolver——内容解析者， 其作用是按照一定规则访问内容提供者的数据（其实就是调用内容提供者自定义的接口来操作它的数据）。
+    ContentObserver——内容观察者，目的是观察(捕捉)特定Uri引起的数据库的变化，继而做一些相应的处理，它类似于数据库技术中的触发器(Trigger)，当   ContentObserver所观察的Uri发生变化时，便会触发它。
+
 ##### 23. 请描述一下广播BroadcastReceiver的理解
 ##### 24. 广播的分类
 ##### 25. 广播使用的方式和场景
 ##### 26. 在manifest 和代码中如何注册和使用BroadcastReceiver?
 ##### 27. 本地广播和全局广播有什么差别？
 ##### 28. BroadcastReceiver，LocalBroadcastReceiver 区别
+ -BroadcastReceiver是针对应用间、应用与系统间、应用内部进行通信的一种方式
+LocalBroadcastReceiver仅在自己的应用内发送接收广播，也就是只有自己的应用能收到，数据更加安全广播只在这个程序里，而且效率更高。
+不能静态注册，只能采用动态注册的方式
+
 ##### 29. AlertDialog,popupWindow,Activity区别
 ##### 30. Application 和 Activity 的 Context 对象的区别
 ##### 31. Android属性动画特性
@@ -198,10 +226,26 @@
 ##### 1. Android动画框架实现原理
 ##### 2. Android各个版本API的区别
 ##### 3. Requestlayout，onlayout，onDraw，DrawChild区别与联系
+-调用requestLayout()方法的时机是：当前View发生了一些改变，这个改变使得现有的View失效，所以调用requestLayout()方法对View树进行重新布局，过程包括了measure()和layout()过程，但不会调用draw()过程，即不会发生重新绘制视图过程。
+ -onLayout()方法(如果该View是ViewGroup对象，需要实现该方法，对每个子视图进行布局)
+-调用view.invalidate(),会触发onDraw()和computeScroll()。前提是该view被附加在当前窗口上。
+-ViewGroup绘制自己的孩子通过dispatchDraw（canvas）实现，这个方法中调用drawChild()
 ##### 4. invalidate和postInvalidate的区别及使用
+    前者要在主线程调用，后者哪里都可以调用
 ##### 5. Activity-Window-View三者的差别
+ -1、activity的attach方法中执行了window的初始化，window的实例为PhoneWindow。
+ 2、activity的setContentView(ID)方法最终是调用的PhoneWindow的setContentView()方法。
+ 3、PhoneWindow在执行setContentView()的过程中生成了一个frameLayout的子类DecorView.并且根据feature的类型加载了一个对应的系统布局，放入了 decorview中。系统布局中有一个id为com.android.internal.R.id.content的framelayout,这个frameLayout作为一个父布局加载我们应用中自己定义的xml文件。
+
 ##### 6. 谈谈对Volley的理解
 ##### 7. 如何优化自定义View
+  -(1)减少不必要的代码：对于频繁调用的方法，需要尽量减少不必要的代码。
+  (2)不在 onDraw 中做内存分配的事：先从 onDraw 开始，需要特别注意不应该在这里做内存分配的事情，因为它会导致 GC，从而导致卡顿。在初始化或者动画间隙期间做分配内存的动作。不要在动画正在执行的时候做内存分配的事情。
+  (3)减少 onDraw 被调用的次数：大多数时候导致 onDraw 都是因为调用了 invalidate().因此请尽量减少调用 invaildate()的次数。如果可能的话，尽量调用含有 4 个参数的 invalidate()方法而不是没有参数的 invalidate()。没有参数的 invalidate 会强制重绘整个 view。
+  (4)减少 layout 的次数：一个非常耗时的操作是请求 layout。任何时候执行 requestLayout()，会使得 Android UI 系统去遍历整个View 的层级来计算出每一个 view 的大小。如果找到有冲突的值，它会需要重新计算好几次。
+  (5)选用扁平化的 View：另外需要尽量保持 View 的层级是扁平化的（去除冗余、厚重和繁杂的装饰效果），这样对提高效率很有帮助。
+  (6)复杂的 UI 使用 ViewGroup：如果你有一个复杂的 UI，你应该考虑写一个自定义的 ViewGroup 来执行他的 layout 操作。（与内置的view 不同，自定义的 view 可以使得程序仅仅测量这一部分，这避免了遍历整个 view 的层级结构来计算大小。）继承 ViewGroup作为自定义 view 的一部分，有子 views，但是它从来不测量它们。而是根据他自身的 layout 法则，直接设置它们的大小。
+
 ##### 8. 低版本SDK如何实现高版本api？
 ##### 9. 描述一次网络请求的流程
 ##### 10. HttpUrlConnection 和 okhttp关系
