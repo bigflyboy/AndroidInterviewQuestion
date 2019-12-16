@@ -247,7 +247,17 @@ LocalBroadcastReceiver仅在自己的应用内发送接收广播，也就是只�
   (6)复杂的 UI 使用 ViewGroup：如果你有一个复杂的 UI，你应该考虑写一个自定义的 ViewGroup 来执行他的 layout 操作。（与内置的view 不同，自定义的 view 可以使得程序仅仅测量这一部分，这避免了遍历整个 view 的层级结构来计算大小。）继承 ViewGroup作为自定义 view 的一部分，有子 views，但是它从来不测量它们。而是根据他自身的 layout 法则，直接设置它们的大小。
 
 ##### 8. 低版本SDK如何实现高版本api？
+  1、添加注解 @TargetApi(Build.VERSION_CODES.N)
+  不管项目的minSdkVersion是多少，被注解元素的的minSdk指定为特定版本，以跳过lint检查
+
+  2、添加运行时SDK版本判断
+
 ##### 9. 描述一次网络请求的流程
+1.通过URL找IP
+2.对IP结果建立TCP连接
+自己主机IP端口的对目标IP的端口（例：http://www.baidu.com http协议所占用的TCP端口为80端口）三次握手建立TCP连接。
+3.向服务器发送数据
+4.服务器解析，并返回
 ##### 10. HttpUrlConnection 和 okhttp关系
 ##### 11. Bitmap对象的理解
 ##### 12. looper架构
