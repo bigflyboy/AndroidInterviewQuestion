@@ -294,6 +294,30 @@ LocalBroadcastReceiver仅在自己的应用内发送接收广播，也就是只�
 ##### 10. View和ViewGroup分别有哪些事件分发相关的回调方法
 ##### 11. View刷新机制
 ##### 12. View绘制流程
+https://blog.csdn.net/sinat_27154507/article/details/79748010
+    measureChildWithMargins-getChildMeasureSpec。 会根据父布局的measurespec 确定子view的
+    当父View的mode是EXACTLY的时候：说明父View的大小是确定的
+
+子View的宽或高是MATCH_PARENT：
+子View的宽或高是WRAP_CONTENT：子View是包裹布局，说明子View的大小还不确定，所以子View最大不能超过父View的大小mode=AT_MOST。
+子View的宽或高是具体数值：子viewd大小已经固定了，子View的大小就是固定这个数值，mode=EXACTLY。
+当父View的mode是AT_MOST的时候：说明父View大小是不确定的。
+
+子View的宽或高是MATCH_PARENT：父View大小是不确定的，子View是填充布局情况，也不能确定大小，所以View大小不能超过父View的大小，mode=AT_MOST
+子View的宽或高是WRAP_CONTENT：子View是包裹布局，大小不能超过父View的大小，mode=AT_MOST。
+子View的宽或高是具体数值：子viewd大小已经固定了，子View的大小就是固定这个数值，mode=EXACTLY。 
+
+    需要注意一点就是，此时的MeasureSpec并不是View真正的大小，只有setMeasuredDimension之后才能真正确定View的大小。
+    getDefaultSize 主要作用就是根据View的建议最小值，结合父View传递的measureSpec，得出并返回measureSpec。 并不是父View 独自决定，它是根据父 view 的MeasureSpec加上子vIew的自己的LayoutParams，通过相应的规则转化而得到的大小
+    setMeasuredDimension 作用就是将测量好的宽跟高进行存储。在onMeasure（） 必须调用这个方法，不然就会抛出 IllegalStateException 异常。
+   
+   draw 过程中一共分成7步，其中两步我们直接直接跳过不分析了。
+  第一步：drawBackground(canvas)： 作用就是绘制 View 的背景。
+  第三步：onDraw(canvas) ：绘制 View 的内容。View 的内容是根据自己需求自己绘制的，所以方法是一个空方法，View的继承类自己复写实现绘制内容。
+  第三步：dispatchDraw（canvas）：遍历子View进行绘制内容。在 View 里面是一个空实现，ViewGroup 里面才会有实现。在自定义 ViewGroup 一般不用复写这个方法，因为它在里面的实现帮我们实现了子 View 的绘制过程，基本满足需求。
+  第四步：onDrawForeground(canvas)：对前景色跟滚动条进行绘制。
+  第五步：drawDefaultFocusHighlight(canvas)：绘制默认焦点高亮
+
 ##### 13. 自定义控件原理
 ##### 14. 自定义View如何提供获取View属性的接口？
 ##### 15. Android代码中实现WAP方式联网
@@ -307,19 +331,31 @@ LocalBroadcastReceiver仅在自己的应用内发送接收广播，也就是只�
 ##### 23. 什么情况导致oom？
 ##### 24. 有什么解决方法可以避免OOM？
 ##### 25. Oom 是否可以try catch？为什么？
+    在try语句中声明了很大的对象，导致OOM，并且可以确认OOM是由try语句中的对象声明导致的，那么在catch语句中，可以释放掉这些对象，解决OOM的问题，继续执行剩余语句。
+
+    但是这通常不是合适的做法。
+
+    Java中管理内存除了显式地catch OOM之外还有更多有效的方法：比如SoftReference, WeakReference, 硬盘缓存等。
+    在JVM用光内存之前，会多次触发GC，这些GC会降低程序运行的效率。
+    如果OOM的原因不是try语句中的对象（比如内存泄漏），那么在catch语句中会继续抛出OOM
 ##### 26. 内存泄漏是什么？
+    https://blog.csdn.net/weixin_41101173/article/details/79710782
 ##### 27. 什么情况导致内存泄漏？
 ##### 28. 如何防止线程的内存泄漏？
 ##### 29. 内存泄露场的解决方法
 ##### 30. 内存泄漏和内存溢出区别？
 ##### 31. LruCache默认缓存大小
+    默认手机内存的1/8
 ##### 32. ContentProvider的权限管理(解答：读写分离，权限控制-精确到表级，URL控制)
+    https://blog.csdn.net/anddlecn/article/details/51733690
 ##### 33. 如何通过广播拦截和abort一条短信？
 ##### 34. 广播是否可以请求网络？
+    子线程可以，主线程超过10s引起anr
 ##### 35. 广播引起anr的时间限制是多少？
 ##### 36. 计算一个view的嵌套层级
 ##### 37. Activity栈
 ##### 38. Android线程有没有上限？
+    其实这个没有上限的，因为资源都限制在这个进程里，你开多少线程都最多用这些资源
 ##### 39. 线程池有没有上限？
 ##### 40. ListView重用的是什么？
 ##### 41. Android为什么引入Parcelable？
@@ -345,7 +381,9 @@ LocalBroadcastReceiver仅在自己的应用内发送接收广播，也就是只�
 ##### 16. Bitmap的recycler()
 ##### 17. Android中开启摄像头的主要步骤
 ##### 18. ViewPager使用细节，如何设置成每次只初始化当前的Fragment，其他的不初始化？
+    在setUserVisibleHint()方法中设置加载数据方法，加载数据方法中设置检测方法，如果视图已经初始化而且视图对用户可见（getUserVisibleHint()为true），则加载数据
 ##### 19. 点击事件被拦截，但是想传到下面的View，如何操作？
+    虽然网上说的花里胡哨。但是没用，拦截后 手动在父view的ontouch 里调用子view的 dispatch
 ##### 20. 微信主页面的实现方式
 ##### 21. 微信上消息小红点的原理
 ##### 22. CAS介绍（这是阿里巴巴的面试题，我不是很了解，可以参考博客: CAS简介）
@@ -461,11 +499,19 @@ LocalBroadcastReceiver仅在自己的应用内发送接收广播，也就是只�
 #### (7) 性能优化
 
 ##### 1. 如何对Android 应用进行性能分析以及优化?
+    尽量减少布局层级和复杂度
+     善用Tag include merge
+    使用traceView  检查代码的耗时区
+    检查内存泄漏
+    图片进行压缩 
+    findbugs
+    最后不合理的产品需求
 ##### 2. ddms 和 traceView
 ##### 3. 性能优化如何分析systrace？
 ##### 4. 用IDE如何分析内存泄漏？
 ##### 5. Java多线程引发的性能问题，怎么解决？
 ##### 6. 启动页白屏及黑屏解决？
+    做成主题图层  给启动页
 ##### 7. 启动太慢怎么解决？
 ##### 8. 怎么保证应用启动不卡顿？
 ##### 9. App启动崩溃异常捕捉
@@ -480,7 +526,7 @@ LocalBroadcastReceiver仅在自己的应用内发送接收广播，也就是只�
 ##### 18. Bitmap如何处理大图，如一张30M的大图，如何预防OOM
 ##### 19. java中的四种引用的区别以及使用场景
 ##### 20. 强引用置为null，会不会被回收？
-
+    会 只要没有引用
 #### (8) NDK、jni、Binder、AIDL、进程通信有关
 
 ##### 1. 请介绍一下NDK
