@@ -33,6 +33,9 @@
 
 ####  (2) java深入源码级的面试题 
 ##### 1. 哪些情况下的对象会被垃圾回收机制处理掉？ 
+   1.所有实例都没有活动线程访问。
+   2.没有被其他任何实例访问的循环引用实例。
+   3.Java 中有不同的引用类型。判断实例是否符合垃圾收集的条件都依赖于它的引用类型。
 ##### 2. 讲一下常见编码方式？ 
 ##### 3. utf-8编码中的中文占几个字节；int型几个字节？
 ##### 4. 静态代理和动态代理的区别，什么场景使用？
@@ -100,6 +103,8 @@
 ##### 5. 如何控制某个方法允许并发访问线程的个数？
 - Semaphore ,在方法执行之前mSemaphore.acquire(); 执行之后 mSemaphore.release();****
 ##### 6. 在Java中wait和seelp方法的不同；
+    在调用sleep()方法的过程中，线程不会释放对象锁。
+    而当调用wait()方法的时候，线程会放弃对象锁，
 ##### 7. 谈谈wait/notify关键字的理解
 ##### 8. 什么导致线程阻塞？
 ##### 9. 线程如何关闭？
@@ -293,6 +298,8 @@ LocalBroadcastReceiver仅在自己的应用内发送接收广播，也就是只�
 ##### 9. 事件分发中的onTouch 和onTouchEvent 有什么区别，又该如何使用？
 ##### 10. View和ViewGroup分别有哪些事件分发相关的回调方法
 ##### 11. View刷新机制
+    最终走到了父布局ViewGroup的invalidateChild()方法.通过一个do while循环查找父布局，最终指向了ViewRootImpl的invalidateChildInParent()方法.
+   最后走到绘制三大流程都是在performTraversals。 View的测量、布局、绘制三大流程都是在performTraversals()方法中发起的。
 ##### 12. View绘制流程
 https://blog.csdn.net/sinat_27154507/article/details/79748010
     measureChildWithMargins-getChildMeasureSpec。 会根据父布局的measurespec 确定子view的
